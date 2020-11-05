@@ -1,0 +1,125 @@
+<html>
+	<head>
+		<title>Bop it!</title>
+	</head>
+	<body id = "body">
+		<p>High Score: <span id = "highScore"></span></p>
+		<p>Score: <span id = "score"></span></p>
+		<button id = "playButton">Play</button>
+		<p>Command: <span id = "commandDisplay"></span></p>
+	
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script>
+			var userHighScore;
+			var userScore = 0;
+			var localStorageScore = localStorage.getItem('allTimeHighScore');
+			var commands = [
+				{
+					command: "Spacebar",
+					keycode: 32
+				},
+				{
+					command: "Enter",
+					keycode: 13
+				},
+				{
+					command: "Five",
+					keycode: 53
+				}
+			];
+			var currentCommand;
+			var timeLeft;			
+
+			var playButton = $("#playButton");
+			
+			//Displays Scores on Startup
+			userHighScore = localStorageScore;
+			$("#highScore").text(userHighScore);
+			$("#score").text(userScore);
+			
+
+			
+			//Start Game Button
+			$(playButton).click(startGame);
+						
+			function startGame() {
+				//$(playButton).hide();
+				
+				userScore = 0;
+				$("#score").text(0);
+				
+				//var localStorageScore = localStorage.getItem('score');
+				//	$(highScore).text(localStorageScore);
+				
+				allowKeypresses();
+				giveCommand();				
+				timer();				
+			};
+			
+			// Allow to detect user input
+			function allowKeypresses() {
+				//Eventlistner for user keypresses
+				$(document).keypress(function(userInput) {
+					console.log(userInput.which);
+					checkKeypress(userInput.which);
+				});
+			}
+			
+			function timer() {
+				timeLeft = setTimeout(function(){alert("Time end."); }, 2000); 
+			};
+			
+			function resetTimer() {
+				clearTimeout(timeLeft);
+			};
+			
+			function giveCommand() {
+				var randomNumber = Math.floor(Math.random() * 3);
+				
+				currentCommand = commands[randomNumber].keycode;
+				console.log("currentCommand = " + currentCommand);
+				
+				$("#commandDisplay").text(commands[randomNumber].command);				
+			};
+			
+			function checkKeypress(userInput) {
+				if (userInput == currentCommand) {
+					console.log("Correct!");
+					updateScore();
+					giveCommand();
+					resetTimer();
+					//timer();
+				}
+				else {
+					console.log("Wrong");
+					endGame();
+				}
+
+			};
+			
+			function updateScore() {
+				userScore = userScore + 1
+				$("#score").text(userScore);
+			};
+			
+			function endGame() {
+				//$(playButton).show();
+				$("document").off();
+				checkHighScore();
+			};
+			
+			function checkHighScore() {
+				if (localStorage.getItem('allTimeHighScore')) {
+					// we have a previous high score and need to check
+					if(userScore > localStorage.getItem('allTimeHighScore')) {
+						console.log("You got a high score!");
+						localStorage.setItem("allTimeHighScore",userScore);
+					}
+				} else {
+					localStorage.setItem("allTimeHighScore", userScore);
+				}
+			}
+
+		</script>
+	</body>
+</html>
