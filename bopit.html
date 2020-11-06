@@ -45,6 +45,8 @@
 			function startGame() {
 				//$(playButton).hide();
 				
+				$(playButton).off();
+				
 				userScore = 0;
 				$("#score").text(0);
 				
@@ -66,10 +68,12 @@
 			}
 			
 			function timer() {
+				console.log("Setting");
 				timeLeft = setTimeout(function(){alert("Time end."); }, 2000); 
 			};
 			
 			function resetTimer() {
+				console.log("Resetting");
 				clearTimeout(timeLeft);
 			};
 			
