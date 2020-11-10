@@ -43,15 +43,12 @@
 			$(playButton).click(startGame);
 						
 			function startGame() {
-				//$(playButton).hide();
+				$(playButton).hide();
 				
 				$(playButton).off();
 				
 				userScore = 0;
 				$("#score").text(0);
-				
-				//var localStorageScore = localStorage.getItem('score');
-				//	$(highScore).text(localStorageScore);
 				
 				allowKeypresses();
 				giveCommand();				
@@ -69,7 +66,7 @@
 			
 			function timer() {
 				console.log("Setting");
-				timeLeft = setTimeout(function(){alert("Time end."); }, 2000); 
+				timeLeft = setTimeout(endGame, 2000); 
 			};
 			
 			function resetTimer() {
@@ -92,7 +89,7 @@
 					updateScore();
 					giveCommand();
 					resetTimer();
-					//timer();
+					timer();
 				}
 				else {
 					console.log("Wrong");
@@ -107,7 +104,8 @@
 			};
 			
 			function endGame() {
-				//$(playButton).show();
+				alert("Game Over");
+				$(playButton).show();
 				$("document").off();
 				checkHighScore();
 			};
